@@ -14,22 +14,25 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class PasswordStrengthMeter extends JComponent {
 
-	public static int score = 0;
+	static int score = 0;
 	JLabel instructionLabel;
 	JButton resetButton;
 	final JLabel commentLabel, resultLabel, resultLabel2;
 	final JTextField inputField;
+	AlgorithmInterface a;
 
 	/**
 	 * @author Jacob Bergvall, Oskar Fahlström
 	 */
-	public PasswordStrengthMeter() {
+	public PasswordStrengthMeter(AlgorithmInterface a) {
 		instructionLabel = new JLabel("Enter your password");
 		commentLabel = new JLabel("");
 		inputField = new JTextField();
 		resetButton = new JButton("Start over");
 		resultLabel = new JLabel("");
 		resultLabel2 = new JLabel("");
+
+		this.a = a;
 
 		// Set size of your shit.
 		instructionLabel.setPreferredSize(new Dimension(200, 20));
@@ -76,7 +79,7 @@ public class PasswordStrengthMeter extends JComponent {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				score = 0; // reset score
-				new StrengthAlgorithm(inputField.getText());
+				a.strengthAlgorithm(inputField.getText());
 				commentLabel.setText("Password strength:  " + score + " / 5");
 				resultLabel.setOpaque(true);
 				resultLabel2.setOpaque(true);
@@ -120,5 +123,4 @@ public class PasswordStrengthMeter extends JComponent {
 			}
 		});
 	}
-
 }
