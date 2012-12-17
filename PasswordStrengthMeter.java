@@ -11,6 +11,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+/**
+ * Created on Dec 6, 2012, 8:28:10 AM
+ * 
+ * @author Jacob Bergvall, Oskar Fahlström
+ */
 @SuppressWarnings("serial")
 public class PasswordStrengthMeter extends JComponent {
 
@@ -19,12 +24,14 @@ public class PasswordStrengthMeter extends JComponent {
 	JButton resetButton;
 	final JLabel commentLabel, resultLabel, resultLabel2;
 	final JTextField inputField;
-	AlgorithmInterface a;
+	StrengthAlgorithm a;
 
 	/**
-	 * @author Jacob Bergvall, Oskar Fahlström
+	 * A simple program that calculates the strength of a password.
+	 * 
+	 * @param a
 	 */
-	public PasswordStrengthMeter(AlgorithmInterface a) {
+	public PasswordStrengthMeter(StrengthAlgorithm a) {
 		instructionLabel = new JLabel("Enter your password");
 		commentLabel = new JLabel("");
 		inputField = new JTextField();
@@ -34,14 +41,13 @@ public class PasswordStrengthMeter extends JComponent {
 
 		this.a = a;
 
-		// Set size of your shit.
+		// Set the default size of our fields.
 		instructionLabel.setPreferredSize(new Dimension(200, 20));
 
-		// Listeners and shit.
 		inputFieldListener(inputField);
-
 		resetButtonListener(resetButton);
 
+		// Create the layout.
 		GridLayout layout = new GridLayout(3, 2);
 		setLayout(layout);
 
@@ -54,12 +60,16 @@ public class PasswordStrengthMeter extends JComponent {
 		add(resultLabel2);
 	}
 
+	/**
+	 * Set up the listener for the reset button.
+	 * 
+	 * @param resetButton
+	 */
 	public void resetButtonListener(final JButton resetButton) {
 		resetButton.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+			public void actionPerformed(ActionEvent e) {
 				inputField.setText("");
 				commentLabel.setText("");
 				resultLabel.setText("");
@@ -69,6 +79,11 @@ public class PasswordStrengthMeter extends JComponent {
 		});
 	}
 
+	/**
+	 * Set up the listener for the main input field.
+	 * 
+	 * @param inputField
+	 */
 	public void inputFieldListener(final JTextField inputField) {
 		inputField.addKeyListener(new KeyListener() {
 
@@ -84,8 +99,7 @@ public class PasswordStrengthMeter extends JComponent {
 				resultLabel.setOpaque(true);
 				resultLabel2.setOpaque(true);
 				if (inputField.getText().length() == 0) {
-					// When all text is deleted from the input field, the labels
-					// are reset.
+					// Labels reset if all text is deleted from the input field.
 					resultLabel.setText("");
 					resultLabel.setBackground(null);
 					resultLabel2.setBackground(null);
@@ -119,7 +133,6 @@ public class PasswordStrengthMeter extends JComponent {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// Nothing here.
 			}
 		});
 	}
