@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  */
 @SuppressWarnings("serial")
 public class PasswordStrengthMeter extends JComponent {
-
+	// CREATE COMPONENTS
 	static int score = 0;
 	JLabel instructionLabel;
 	JButton resetButton;
@@ -32,6 +32,7 @@ public class PasswordStrengthMeter extends JComponent {
 	 * @param a
 	 */
 	public PasswordStrengthMeter(StrengthAlgorithm a) {
+		// INITIALIZE COMPONENTS
 		instructionLabel = new JLabel("Enter your password");
 		commentLabel = new JLabel("");
 		inputField = new JTextField();
@@ -39,6 +40,8 @@ public class PasswordStrengthMeter extends JComponent {
 		resultLabel = new JLabel("");
 		resultLabel2 = new JLabel("");
 
+		// In order to implement the code from the StrengthAlgorithm in the
+		// Demo-class.
 		this.a = a;
 
 		// Set the default size of our fields.
@@ -129,6 +132,10 @@ public class PasswordStrengthMeter extends JComponent {
 					resultLabel.setBackground(Color.GREEN);
 					resultLabel2.setBackground(Color.GREEN);
 				}
+
+				// TODO: Allow the user to change how the strength of the
+				// password is displayed. For example by showing it as a
+				// percentage.
 			}
 
 			@Override

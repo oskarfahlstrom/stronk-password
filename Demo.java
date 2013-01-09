@@ -22,10 +22,16 @@ public class Demo extends JFrame {
 
 			@Override
 			public void strengthAlgorithm(String s) {
+				// If you want to customize the algorithm for other languages,
+				// simply change the strings.
 				String lowercase = "abcdefghijklmnopqrstuvwxyzåäö";
 				String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
 				String numbers = "0123456789";
 				String symbols = "!\"#¤%&/()=?@£$€{[]};,:._-'*";
+
+				// TODO: Add a filter that informs you that certain words
+				// shouldn't be used. For example "password", number sequences
+				// like "1234" etc.
 
 				boolean hasUpper = false;
 				boolean hasLower = false;
