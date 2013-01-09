@@ -1,9 +1,7 @@
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
@@ -22,16 +20,18 @@ public class PasswordStrengthMeter extends JComponent {
 	static int score = 0;
 	JLabel instructionLabel;
 	JButton resetButton;
-	final JLabel commentLabel, resultLabel, resultLabel2;
-	final JTextField inputField;
-	StrengthAlgorithm a;
+	static JLabel commentLabel;
+	static JLabel resultLabel;
+	static JLabel resultLabel2;
+	static JTextField inputField;
+	StrengthAlgorithm sa;
 
 	/**
 	 * A simple program that calculates the strength of a password.
 	 * 
 	 * @param a
 	 */
-	public PasswordStrengthMeter(StrengthAlgorithm a) {
+	public PasswordStrengthMeter(StrengthAlgorithm sa) {
 		// INITIALIZE COMPONENTS
 		instructionLabel = new JLabel("Enter your password");
 		commentLabel = new JLabel("");
@@ -42,12 +42,11 @@ public class PasswordStrengthMeter extends JComponent {
 
 		// In order to implement the code from the StrengthAlgorithm in the
 		// Demo-class.
-		this.a = a;
+		this.sa = sa;
 
 		// Set the default size of our fields.
 		instructionLabel.setPreferredSize(new Dimension(200, 20));
 
-		inputFieldListener(inputField);
 		resetButtonListener(resetButton);
 
 		// Create the layout.
@@ -83,64 +82,11 @@ public class PasswordStrengthMeter extends JComponent {
 	}
 
 	/**
-	 * Set up the listener for the main input field.
+	 * Adds a listener to the input field.
 	 * 
-	 * @param inputField
+	 * @param e
 	 */
-	public void inputFieldListener(final JTextField inputField) {
-		inputField.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				score = 0; // reset score
-				a.strengthAlgorithm(inputField.getText());
-				commentLabel.setText("Password strength:  " + score + " / 5");
-				resultLabel.setOpaque(true);
-				resultLabel2.setOpaque(true);
-				if (inputField.getText().length() == 0) {
-					// Labels reset if all text is deleted from the input field.
-					resultLabel.setText("");
-					resultLabel.setBackground(null);
-					resultLabel2.setBackground(null);
-				}
-				if (score == 1) {
-					resultLabel.setText("REALLY BAD");
-					resultLabel.setBackground(Color.RED);
-					resultLabel2.setBackground(Color.RED);
-				}
-				if (score == 2) {
-					resultLabel.setText("WEAK");
-					resultLabel.setBackground(Color.ORANGE);
-					resultLabel2.setBackground(Color.ORANGE);
-				}
-				if (score == 3) {
-					resultLabel.setText("OK");
-					resultLabel.setBackground(Color.YELLOW);
-					resultLabel2.setBackground(Color.YELLOW);
-				}
-				if (score == 4) {
-					resultLabel.setText("GOOD");
-					resultLabel.setBackground(Color.CYAN);
-					resultLabel2.setBackground(Color.CYAN);
-				}
-				if (score == 5) {
-					resultLabel.setText("EXCELLENT");
-					resultLabel.setBackground(Color.GREEN);
-					resultLabel2.setBackground(Color.GREEN);
-				}
-
-				// TODO: Allow the user to change how the strength of the
-				// password is displayed. For example by showing it as a
-				// percentage.
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		});
+	public void addInputFieldListener(KeyListener e) {
+		inputField.addKeyListener(e);
 	}
 }

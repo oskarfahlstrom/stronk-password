@@ -1,3 +1,7 @@
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -18,7 +22,7 @@ public class Demo extends JFrame {
 		/**
 		 * A simple strength algorithm for this demo.
 		 */
-		StrengthAlgorithm sa = new StrengthAlgorithm() {
+		final StrengthAlgorithm sa = new StrengthAlgorithm() {
 
 			@Override
 			public void strengthAlgorithm(String s) {
@@ -79,7 +83,78 @@ public class Demo extends JFrame {
 			}
 		};
 
-		JScrollPane scroll = new JScrollPane(new PasswordStrengthMeter(sa));
+		PasswordStrengthMeter psm = new PasswordStrengthMeter(sa);
+
+		/**
+		 * Creates a listener for the input field. From here you can decide how
+		 * the strength of the password should be displayed.
+		 */
+		psm.addInputFieldListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				PasswordStrengthMeter.score = 0; // reset score
+				sa.strengthAlgorithm(PasswordStrengthMeter.inputField.getText());
+				PasswordStrengthMeter.commentLabel
+						.setText("Password strength:  "
+								+ PasswordStrengthMeter.score + " / 5");
+				PasswordStrengthMeter.resultLabel.setOpaque(true);
+				PasswordStrengthMeter.resultLabel2.setOpaque(true);
+				if (PasswordStrengthMeter.inputField.getText().length() == 0) {
+					// Label is reset if all text is deleted from the input
+					// field.
+					PasswordStrengthMeter.resultLabel.setText("");
+					PasswordStrengthMeter.resultLabel.setBackground(null);
+					PasswordStrengthMeter.resultLabel2.setBackground(null);
+				}
+				if (PasswordStrengthMeter.score == 1) {
+					PasswordStrengthMeter.resultLabel.setText("REALLY BAD");
+					PasswordStrengthMeter.resultLabel.setBackground(Color.RED);
+					PasswordStrengthMeter.resultLabel2.setBackground(Color.RED);
+				}
+				if (PasswordStrengthMeter.score == 2) {
+					PasswordStrengthMeter.resultLabel.setText("WEAK");
+					PasswordStrengthMeter.resultLabel
+							.setBackground(Color.ORANGE);
+					PasswordStrengthMeter.resultLabel2
+							.setBackground(Color.ORANGE);
+				}
+				if (PasswordStrengthMeter.score == 3) {
+					PasswordStrengthMeter.resultLabel.setText("OK");
+					PasswordStrengthMeter.resultLabel
+							.setBackground(Color.YELLOW);
+					PasswordStrengthMeter.resultLabel2
+							.setBackground(Color.YELLOW);
+				}
+				if (PasswordStrengthMeter.score == 4) {
+					PasswordStrengthMeter.resultLabel.setText("GOOD");
+					PasswordStrengthMeter.resultLabel.setBackground(Color.CYAN);
+					PasswordStrengthMeter.resultLabel2
+							.setBackground(Color.CYAN);
+				}
+				if (PasswordStrengthMeter.score == 5) {
+					PasswordStrengthMeter.resultLabel.setText("EXCELLENT");
+					PasswordStrengthMeter.resultLabel
+							.setBackground(Color.GREEN);
+					PasswordStrengthMeter.resultLabel2
+							.setBackground(Color.GREEN);
+				}
+
+				// TODO: Allow the user to change how the strength of the
+				// password is displayed. For example by showing it as a
+				// percentage.
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
+
+		JScrollPane scroll = new JScrollPane(psm);
 
 		// WINDOW SETTINGS //
 		add(scroll);
